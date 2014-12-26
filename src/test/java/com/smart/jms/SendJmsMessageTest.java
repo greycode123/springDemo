@@ -16,7 +16,6 @@ public class SendJmsMessageTest extends AbstractBaseTest {
         for (int i = 0; i < 2; i++) {
             sendJmsMessageService.sendMessage("你好，生产者！这是消息：" + (i + 1));
         }
-        //
     }
 
 }
