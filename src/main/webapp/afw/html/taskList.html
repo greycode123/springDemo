@@ -1,0 +1,59 @@
+<div id="tasktask">
+<ul class="list inset">
+
+</ul>
+<a class="button block flat">下一页</a>
+<i id="taskList_tpl" class="hide">
+    <li class="divider">11-20条</li>
+    {{each list as value i}}
+    <li>
+        <a href="#task">
+            <h3>{{value.title}}{{i}}</h3>
+            <p>{{value.time}} | {{value.useID}}<br/>{{value.user}}</p>
+        </a>
+    </li>
+    {{/each}}
+</i>
+
+<script>
+    App.page('taskList', function(){
+        this.title = "待处理申请";
+        this.footer = 'none';
+
+        this.init = function(){
+            console.log("taskList.init()");
+        }
+
+        this.load = function(){
+            console.log("taskList.load()");
+            var data = {
+                pageCount:3,
+                pageNo:1,
+                list: [
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技平安科技平安科技平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技平安科技平安科技平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'},
+                    {title:'关于申请使用中国平安集团公章的申请', time:'111小时11分钟',user:'张三（平安科技）', useID:'公章打印'}
+                ]
+            };
+
+            var html = template('taskList_tpl', data);
+            $('#taskList .list').html(html);
+        }
+        this.unload = function(){
+            console.log("taskList.unload()");
+        }
+    }
+    );
+</script>
+</div>

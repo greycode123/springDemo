@@ -1,0 +1,149 @@
+<div id="viewAttachContentInner" style="min-height: 100%;">
+    <div id="fileContent">
+    </div>
+</div>
+<footer>
+    <div class="clx" align="center" style="padding-top:4px;">
+        <a id="prePageBtn" class="button icon chevron-left big" style="border:none; margin: 0;"></a>
+    <span style="display: inline-block;">
+      <select id="currentPageSelect" style="-webkit-appearance: listbox; width:auto;">
+      </select>
+      /<span id="pageCountSpan"></span>页
+     </span>
+        <a id="nextPageBtn" class="button icon chevron-right big" style="border:none; margin: 0;"></a>
+    </div>
+</footer>
+<style>
+    #viewAttachContent{padding:0 !important;}
+</style>
+<script>
+    App.page('viewAttachContent', function(){
+        this.title="附件详情";
+        this.scroller = "none";
+
+        var $page, $fileContent, $currentPageSelect, $pageCountSpan;
+        var myScroll;
+        var pageCount;
+        var currentPage = 1;
+        var fileId, fileName;
+
+        this.init = function(){
+            $page = $("#viewAttachContentInner");
+            $fileContent = $page.find("#fileContent");
+            $currentPageSelect = $("#currentPageSelect");
+            $pageCountSpan = $("#pageCountSpan");
+
+            myScroll = new iScroll("viewAttachContentInner",{
+                zoom:true,
+                mouseWheel:false
+            });
+
+            $fileContent.bind("swipeRight", function() {
+                prePage();
+            });
+
+            $fileContent.bind("swipeLeft", function() {
+                nextPage();
+            });
+
+            $("#prePageBtn").tap(function(){
+                prePage();
+            });
+
+            $("#nextPageBtn").tap(function(){
+                nextPage();
+            });
+
+            $currentPageSelect.change(function(){
+                if (myScroll.scale != 1)
+                    return;
+
+                loadFilePage(this.value);
+            });
+
+        }
+
+        this.load = function(){
+            currentPage = 1;
+            $currentPageSelect.html("");
+            //myScroll.zoom(0,0,1);
+
+            console.log("viewAttachContent.load");
+            var params = App.getParams();
+            fileName = params['fileName'];
+            fileId = params['fileId'];
+
+            var data = {fileName:fileName, fileId:fileId};
+            MpassAPI.getFilePageCount(data, function(result){
+                pageCount = result.data.pageCount;
+                console.log("viewAttachContent.load: pageCount=" + pageCount);
+                $pageCountSpan.text(pageCount);
+                for(var i = 1 ; i <= pageCount; i++){
+                    $currentPageSelect.append("<option value=" + i + ">" + i + "<option>");
+                }
+
+                $currentPageSelect.find("option:empty").remove();
+
+                loadFilePage(currentPage);
+            });
+        }
+
+        this.unload = function(){
+            $fileContent.empty();
+        }
+
+        function loadFilePage(pageNumber){
+            console.log("loadFilePage:" + pageNumber);
+            var url = "images/"+pageNumber+".jpg?fileName=" + fileName + "&fileId=" + fileId + "&pageNumber=" + pageNumber;
+
+            var $fileContent = $("#fileContent");
+            var $page = $fileContent.find("img[pageNumber=" + pageNumber + "]");
+
+            if ($page.length > 0){
+                $fileContent.find("img").hide();
+                $page.show();
+            }else{
+                App.showMask();
+                $fileContent.find("img").hide();
+                $newImg = $("<img src='" + url +"' pageNumber='" + pageNumber + "' style='width:100%;'>");
+
+                $newImg.load(function(){
+                    App.hideMask();
+                });
+
+                $fileContent.append($newImg);
+            }
+
+            currentPage = pageNumber;
+            $currentPageSelect.val(pageNumber);
+        }
+
+        function prePage(){
+            if (myScroll.scale != 1)
+                return;
+
+            if(currentPage == 1){
+                //$.ui.showMask("已到首页!");
+                App.showToast("已到首页!", "info");
+                return;
+            }
+
+            currentPage--;
+            loadFilePage(currentPage);
+        }
+
+        function nextPage(){
+            if (myScroll.scale != 1)
+                return;
+
+            if(currentPage == pageCount){
+                //$.ui.showMask("已到最后一页!");
+                App.showToast("已到最后一页!", "info");
+                return;
+            }
+
+            currentPage++;
+            loadFilePage(currentPage);
+        }
+    });
+</script>

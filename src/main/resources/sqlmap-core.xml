@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="core">
+
+    <select id="searchAllUserQueue" resultClass="com.smart.user.domain.User">
+        SELECT  user_id queueId ,  user_name userName, user_status userStatus FROM user_queue
+    </select>
+
+    <select id="searchTaskbyTaskStatus" parameterClass="com.smart.task.domain.Task" resultClass="com.smart.task.domain.Task">
+        SELECT task_id taskID,
+          task_status taskStatus,
+          task_fix_user taskFixUser,
+          task_fix_time taskFixTime
+        FROM task
+        WHERE task_status = #taskStatus#
+        LIMIT 0 , 1000
+    </select>
+
+    <insert id="insertTask" parameterClass="com.smart.task.domain.Task">
+        INSERT INTO  task (
+        task_status
+        )
+        VALUES (
+        #taskStatus#
+        );
+    </insert>
+
+    <update id="updateTask" parameterClass="com.smart.task.domain.Task">
+        UPDATE  task
+        <dynamic prepend="set">
+            <isNotEmpty property="taskStatus" prepend=",">
+                task_status = #taskStatus#
+            </isNotEmpty>
+            <isNotEmpty property="taskFixUser" prepend=",">
+                task_fix_user = #taskFixUser#
+            </isNotEmpty>
+            <isNotEmpty property="taskFixTime" prepend=",">
+                task_fix_time = #taskFixTime#
+            </isNotEmpty>
+        </dynamic>
+        WHERE  task_id = #taskID#;
+    </update>
+
+    <update id="fixTask" parameterClass="com.smart.task.domain.Task">
+        UPDATE  task
+        <dynamic prepend="set">
+            <isNotEmpty property="taskStatus" prepend=",">
+                task_status = #taskStatus#
+            </isNotEmpty>
+            <isNotEmpty property="taskFixUser" prepend=",">
+                task_fix_user = #taskFixUser#
+            </isNotEmpty>
+            <isNotEmpty property="taskFixTime" prepend=",">
+                task_fix_time = #taskFixTime#
+            </isNotEmpty>
+        </dynamic>
+        WHERE  task_id = #taskID#;
+    </update>
+
+    <insert id="insertTaskDispatcherLog" parameterClass="com.smart.dispatcher.domain.TaskDispatcherLog">
+        INSERT INTO  task_dispatcher_log (
+        id ,
+        task_id,
+        task_status ,
+        user_name,
+        dispatcher_time
+        )
+        VALUES (
+        #ID#,
+        #taskID#,
+        #taskStatus#,
+        #userName#,
+        #dispatherTime#
+        )
+    </insert>
+</sqlMap>

@@ -1,0 +1,54 @@
+<header>
+    <a id="backButton" onclick="window.history.back();" class="button" style="visibility: visible !important;">Back</a>
+    <h1>task</h1>
+</header>
+<div id="taskDiv" class="table border inner">
+    <table>
+        <tr>
+            <td>抬头机构<a href="javascript:;" onclick="$.ui.goBack();" class="button">返回</a></td>
+            <td><a href="#listview" class="button">上拉刷新</a><a href="#comment" class="button">评论</a></td>
+        </tr>
+        <tr>
+            <td>用印方式</td>
+            <td>公章打印</td>
+        </tr>
+        <tr>
+            <td>印章名称</td>
+            <td>平安科技深圳有限公司</td>
+        </tr>
+        <tr>
+            <td>印章</td>
+            <td>申请公章</td>
+        </tr>
+    </table>
+</div>
+<div class="section">
+    <div class="head">印章协调员备注</div>
+    <div class="body">
+        对双方都凡事都凡事都的份上   方式
+    </div>
+</div>
+<div class="section">
+    <div class="head">审批意见</div>
+    <div class="body">
+        对双方都凡事都凡事都的份上   方式
+    </div>
+</div>
+<script>
+    App.page('task', function(){
+        var $page;
+
+        this.init = function(){
+            $page = $('#task');
+            console.log($page);
+            console.log("task.init()");
+        }
+        this.load = function(){
+            console.log("task.load()");
+            $page.find('#taskDiv').append('taskPanel loaded');
+        }
+        this.unload = function(){
+            console.log("task.unload()");
+        }
+    });
+</script>

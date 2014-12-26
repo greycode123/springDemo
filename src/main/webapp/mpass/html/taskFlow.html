@@ -1,0 +1,81 @@
+<div id="taskFlowTable" class="table">
+    <table>
+        <thead>
+        <tr>
+            <td class="flowId">步骤</td>
+            <td class="ownName">处理人</td>
+            <td class="flowDesc">任务描述</td>
+            <td class="flowDoneDate">处理时间</td>
+            <td class="flowStatus">处理状态</td>
+            <td class="nodeDesc">处理说明</td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<textarea id="taskFlow_tpl" class="hide">
+    {each approveInfoList as v i}
+    <tr {if v.flowStatus==0}class="red"{/if}>
+    <td>{v.flowId}</td>
+    <td>{if stampApplition.useId==18&&v.ownName=='印章作业组'}寿险财务部{else}{v.ownName}{/if}</td>
+    <td>{v.flowDesc}{if v.flowDesc == '用印状态' && requestInfo.filePos=='01'}(邮包未到){/if}</td>
+    <td>{v.flowDoneDate | timeStampFormat:'yyyy-MM-dd hh:mm:ss'}</td>
+    <td>
+        {if v.flowStatus==0}处理中{/if}
+        {if v.flowStatus==1}已处理{/if}
+        {if v.flowStatus==2}已处理{/if}
+        {if v.flowStatus==-100}未处理{/if}
+    </td>
+    <td>{v.nodeDesc}</td>
+    </tr>
+    {/each}
+</textarea>
+
+<script>
+    App.page('taskFlow', function(){
+        this.title = '查看流程';
+        this.footer = 'none';
+        this.jsScrolling = true;
+        this.xScroll = true;
+
+        var $page = "",
+                $taskFlowDiv="",
+                taskId="";
+
+        this.init = function(){
+            console.log("taskFlowPanel init");
+            $page = $('#taskFlow');
+            $taskFlowDiv = $page.find("#taskFlowTable");
+
+            /* var myScroller = $page.scroller({
+             useJsScroll:true
+             });
+
+             myScroller.verticalScroll = true;
+             myScroller.horizontalScroll = true;
+
+             myScroller.enable();*/
+        }
+
+        this.load = function(){
+            $.ui.scrollToTop('taskFlow', '0ms');
+            console.log("taskFlowPanel load");
+            taskId = App.getParams()['taskId'];
+
+            $.ui.showMask();
+            MpassAPI.getTaskFlow(taskId, function(result){
+                console.log('getTaskFlow taskId=' + taskId);
+                var html = App.tmpl('taskFlow_tpl', result.data);
+                console.log(result.data);
+                $taskFlowDiv.find("tbody").html(html);
+                console.log($taskFlowDiv.attr('id'));
+                $.ui.hideMask();
+            });
+        }
+
+        this.unload = function(){
+            $taskFlowDiv.find("tbody").empty();
+        }
+    });
+</script>

@@ -1,0 +1,14 @@
+.section{
+    margin: 5px 0;
+}
+
+.section .head{
+    padding: 10px 10px;
+    font-size: 12px;
+}
+
+.section .body{
+    border-radius: 6px;
+    padding: 15px 10px;
+    background-color: #FFF;
+}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>公章系统 - mpass</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<script type="text/javascript" src="js/lib/appframework.js"></script>
+<script type="text/javascript" src="js/lib/template.js"></script>
+<style>
+    * {
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+        -ms-touch-action: none;
+        -moz-user-select: -moz-none;
+        -webkit-touch-callout: none;
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    body{
+        font-size:14px;
+    }
+    a{
+        display:block;
+        text-decoration: none;
+        color: #333;
+    }
+    a:visited {
+        text-decoration: none;
+        color: #551a8b;
+        color: #333;
+    }
+
+    .table{
+        margin:0 -10px;
+        margin-bottom:10px;
+    }
+
+    .table.inner{
+        margin:0 0 10px 0;
+    }
+
+    .table.inner table{
+        margin:0 0 10px 0;
+        border-radius: 6px;
+    }
+
+    .table table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        background-color:#FFF;
+        font-size:inherit;
+    }
+
+    .table td{
+        border-bottom:1px solid #CCC;
+        padding:12px 10px 12px 10px;
+    }
+
+    .table:not(.inner) tr:first-child td{ border-top:1px solid #CCC;}
+
+    .table.inner tr:last-child td{ border-bottom:none;}
+
+    .table table table tr:first-child td{ border-top:none !important;}
+
+    .table table table tr:last-child td{border-bottom:none;}
+
+    .box{
+        margin:0 -10px 10px;
+    }
+
+    .box.inner{
+        margin-left:0;
+        margin-right:0;
+    }
+
+    .box .head{
+        color:#53575E;
+        padding: 13px 0 7px 10px;
+        background-color: transparent
+    }
+
+    .box .content{
+        background: #FFF;
+        padding: 13px;
+    }
+
+    .box.inner .head{
+        padding-left:5px;
+    }
+
+    .box.inner .content{
+        border-radius: 6px;
+    }
+
+    .box .content li{
+        padding:8px 0;
+        border-bottom:1px #ccc dashed;
+    }
+
+    .box .content li:first-child{
+        padding-top:0;
+    }
+
+    header,footer{padding: 5px 0;}
+    header {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        line-height:44px;
+        height: 44px;
+        padding: 0;
+        text-align: center;
+        font-weight: bold;
+        border-bottom:1px solid #D1D1D1;
+    }
+    #header-left{
+        position:absolute;
+        top:0px;
+        height: 100%;
+        width:100px;
+    }
+    #backBtn{
+        text-align:left; padding-left:10px;
+    }
+    header h1{height:44px; padding: 10px 0; font:bold 18px 'Microsoft YaHei'; color: rgb(83, 87, 94); overflow:hidden;}
+    #main {
+        position: absolute;
+        z-index: 1;
+        top: 44px;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        padding: 0 10px 10px;
+        background:#EEE;
+        overflow-y: scroll;
+    }
+
+    #bargainDiv .table td:nth-child(1){
+
+    }
+</style>
+<script>
+    var CONFIG = {};
+    var USER = {};
+
+    var _get = function(url,param,success,error){
+        _ajax('get',url,param,success,error);
+    }
+
+    var _ajax = function(type,url,param,mySuccess,myError){
+        param.random = Math.random();
+        var options = {
+            url : url,
+            type : type||'get',
+            data : param,
+            timeout : 120000,//超时时间默认2分钟
+            mySuccess : mySuccess,
+            myError:myError,
+            success : function(result){
+                if(result.status == 'success'){
+                    if(mySuccess)
+                        mySuccess(result);
+                }else{
+                    alert('\u9519\u8bef\uff1a'+ result.msg);//错误：
+                    myError();
+                }
+            },
+            cache : type == 'get'?false:true,
+            error : function(xhr,type){
+                _parseError(xhr,type,url);
+                if(myError){
+                    myError();
+                }
+            },
+            dataType : 'json'
+        }
+        $.ajax(options);
+    }
+
+    function _parseError(xhr,type,url){
+        var data = xhr.responseText,
+                status = xhr.status;
+
+        if(type == 'timeout'){
+            alert('\u8fde\u63a5\u670d\u52a1\u5668\u8d85\u65f6,\u8bf7\u68c0\u67e5\u7f51\u7edc\u662f\u5426\u7545\u901a\uff01'); //连接服务器超时,请检查网络是否畅通！
+        }else if(type == 'parsererror'){
+            if(data && data.indexOf('script_umlogin') != -1){
+                alert('\u4f60\u8fd8\u672a\u767b\u9646\uff0c\u8bf7\u8fdb\u884c\u767b\u9646\u3002');//你还未登陆，请进行登陆。
+            } else {
+                alert('\u89e3\u6790\u8fd4\u56de\u7ed3\u679c\u5931\u8d25:' + status);//解析返回结果失败:
+            }
+        }else if(type == 'error'){
+            alert('\u8fde\u63a5\u670d\u52a1\u5668\u5931\u8d25\uff1a'+status);//连接服务器失败：
+        }else{
+            alert('\u672a\u77e5\u5f02\u5e38\uff1a'+status);//未知异常：
+        }
+    }
+
+    $(document).ready(function(){
+        _get('json/getMpassConfig.json', {},function (result) {
+            console.log(result);
+            var data = result.data;
+            CONFIG.meoaUrl = data.meoaUrl;
+            console.log(CONFIG);
+            init();
+        });
+    });
+
+    function init(){
+        console.log('init');
+        var param = getParam();
+
+        $('#backBtn').on('click', function(){
+            window.location.href = param.backUrl;
+        });
+
+        if(!param.taskId){
+            alert("taskId不能为空");
+            return;
+        }
+
+        _get('json/getBargainInfo.json', {taskId:param.taskId},function (result) {
+            var html = template('bargain_tpl', result.data);
+            $('#main').html(html);
+        });
+    }
+
+    function _parseError(xhr,type,url){
+        var data = xhr.responseText,
+                status = xhr.status;
+
+        if(type == 'timeout'){
+            alert('\u8fde\u63a5\u670d\u52a1\u5668\u8d85\u65f6,\u8bf7\u68c0\u67e5\u7f51\u7edc\u662f\u5426\u7545\u901a\uff01'); //连接服务器超时,请检查网络是否畅通！
+        }else if(type == 'parsererror'){
+            if(data && data.indexOf('script_umlogin') != -1){
+                alert('\u4f60\u8fd8\u672a\u767b\u9646\uff0c\u8bf7\u8fdb\u884c\u767b\u9646\u3002');//你还未登陆，请进行登陆。
+            } else {
+                alert('\u89e3\u6790\u8fd4\u56de\u7ed3\u679c\u5931\u8d25:' + status);//解析返回结果失败:
+            }
+        }else if(type == 'error'){
+            alert('\u8fde\u63a5\u670d\u52a1\u5668\u5931\u8d25\uff1a'+status);//连接服务器失败：
+        }else{
+            alert('\u672a\u77e5\u5f02\u5e38\uff1a'+status);//未知异常：
+        }
+    }
+
+    function getParam(){
+        var url = window.location.href;
+        var param={};
+
+        if(url.lastIndexOf("?")>0) {
+            var paramStr = url.substring(url.lastIndexOf("?")+1,url.length);
+            var paramStrArr = paramStr.split("&");
+            for(var i=0;i<paramStrArr.length;i++) {
+                var oneParam = paramStrArr[i].split("=");
+                if(oneParam.length = 2){
+                    param[oneParam[0]] = oneParam[1];
+                }
+            }
+        }
+
+        console.log(param);
+        return param;
+    }
+</script>
+</head>
+<body>
+<div id="container">
+    <header>
+        <div id="header-left">
+            <a id="backBtn" style="cursor:hand;">&lt;返回</a>
+        </div>
+        <h1>待处理文件</h1>
+    </header>
+    <div id="main" class="clx">
+    </div>
+</div>
+
+<textarea id="bargain_tpl" style="display:none;">
+    <div class="table">
+        <table>
+            <tr>
+                <td class="title">合同已开始履行</td>
+                <td class="black">
+                    {{if pendingFile.contractStatus == 1}}是{{else}}否{{/if}}
+                </td>
+            </tr>
+            <tr>
+                <td class="title">协议金额</td>
+                <td class="black">
+                    {{if pendingFile.contractaMount == 1}}无金额{{/if}}
+                    {{if pendingFile.contractaMount == 2}}折合人民币0-500万{{/if}}
+                    {{if pendingFile.contractaMount == 3}}折合人民币500-1000万{{/if}}
+                    {{if pendingFile.contractaMount == 4}}折合人民币1000万以上{{/if}}
+                    {{if pendingFile.contractaMount == 1}}无金额{{/if}}
+                </td>
+            </tr>
+            <tr>
+                <td class="title">支付境外（非保险业务类）</td>
+                <td class="black">
+                    {{if pendingFile.overSealPayment == 1}}是{{else}}否{{/if}}
+                </td>
+            </tr>
+            <tr>
+                <td class="title">合同个数</td>
+                <td class="black">
+                    {{pendingFile.contractCount}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    {{each contractList as v i}}
+    <div class="box inner">
+        <div class="head">
+            <div>合同{{i+1}}</div>
+        </div>
+        <div class="table inner">
+            <table>
+                <tr>
+                    <td>标题</td>
+                    <td>{{v.contractTitle}}</td>
+                </tr>
+                <tr>
+                    <td>金额(元)</td>
+                    <td>{{v.contractAmount}}</td>
+                </tr>
+                <tr>
+                    <td>机构/部门名称</td>
+                    <td>{{v.contractDeptName}}</td>
+                </tr>
+                <tr>
+                    <td>类型</td>
+                    <td>{{v.contractTypeName.replace(/,--请选择--/g,'').replace(/,/g,'&gt;')}}</td>
+                </tr>
+                <tr>
+                    <td>当事人</td>
+                    <td>
+                        {{if v.contractPartiesperson1}}<span class="party">甲方：</span><span class="partyName">{{v.contractPartiesperson1}} </span>{{/if}}
+                        {{if v.contractPartiesperson2}}<span class="party">乙方：</span><span class="partyName">{{v.contractPartiesperson2}} </span>{{/if}}
+                        {{if v.contractPartiesperson3}}<span class="party">丙方：</span><span class="partyName">{{v.contractPartiesperson3}} </span>{{/if}}
+                        {{if v.contractPartiesperson4}}<span class="party">丁方：</span><span class="partyName">{{v.contractPartiesperson4}} </span>{{/if}}
+                        {{if v.contractPartiesperson5}}<span class="party">戊方：</span><span class="partyName">{{v.contractPartiesperson5}} </span>{{/if}}
+                        {{if v.contractPartiesperson6}}<span class="party">其他方：</span><span class="partyName">{{v.contractPartiesperson6}} </span>{{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>平安格式合同</td>
+                    <td>{{if v.contractFormat == 1}}是: {{v.contractFormatContent}}{{else}}否{{/if}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{/each}}
+</textarea>
+</body>
+</html>

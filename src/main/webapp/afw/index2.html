@@ -1,0 +1,133 @@
+﻿<html>
+<head>
+    <title>公章系统 - mpass</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="./build/css/af.ui.css" />
+    <link rel="stylesheet" type="text/css" href="./build/css/icons.min.css" />
+    <script type="text/javascript" charset="utf-8" src="./build/appframework.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./build/ui/appframework.ui.js"></script>
+    <style>
+
+        #afui.mp .list.noArrow > li{
+            padding-right: 10px;
+        }
+        #afui.mp .list.noArrow > li > a:after{
+            display: none;
+        }
+
+        #afui.mp .list.noArrow > li > a{
+            padding-right: 10px;
+            margin-right: -10px;
+        }
+
+        #afui.mp .afScrollbar {background:#999 !important;}
+
+        .hide{
+            display: none;
+        }
+
+        #taskList .list  li{
+            padding: 15px 10px;
+        }
+
+        #taskList ul .col2{
+            padding: 5px 0;
+        }
+
+        @media handheld, only screen and (min-width: 768px) {
+            #taskList ul .col2:nth-child(2n){
+                text-align: right;
+            }
+        }
+    </style>
+    <script>
+        $.ui.autoLaunch = false;
+        $.ui.resetScrollers = false;
+        $.ui.useOSThemes = false;
+        $.ui.animateHeaders = false;
+        //$.ui.loadDefaultHash=false; //Do not load the panel from the hash
+       // $.ui.isAjaxApp=true;
+        //$.ui.showLoading=false;
+        $.ui.loadingText = "努力加载中...";
+
+        $(document).ready(function(){
+            setTimeout(function(){
+                $.ui.launch();
+               // console.log($.Util.getParams());
+            },2000);
+        });
+
+       (function($){
+            var deferDelayLoaded = {};
+           $(document).on('loadDiv','div', function(e){
+                console.log('catch loadDiv');
+                var what = e.target;
+                var id = what.getAttribute("id");
+                var deferDelayURL = what.getAttribute("data-deferDelay");
+
+                var loadDeferred=function(){
+                    console.log('load=' + id);
+                    $.ajax({
+                        url: intel.xdk.webRoot + deferDelayURL,
+                        async:false,
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $.ui.updatePanel(id, data);
+                                $.ui.parseScriptTags($.query("#" + id).get(0));
+                            }
+                            deferDelayLoaded[id] = true;
+
+                            var fnc = what.getAttribute("data-loadDelay");
+
+                            if(fnc)
+                                $.ui.dispatchPanelEvent(fnc,what);
+                        },
+                        error: function(msg) {
+                            deferDelayLoaded[id] = false;
+                        }
+                    });
+                };
+
+                if(deferDelayURL && (!deferDelayLoaded[id] || deferDelayLoaded[id] == false)){
+                    $.ui.showMask();
+                    console.log('start time');
+                    setTimeout(function(){
+                        loadDeferred();
+                        $.ui.hideMask();
+                        console.log('end time');
+                    },5000);
+                }
+            });
+
+
+        })(af);
+
+
+    </script>
+
+</head>
+<body>
+<div id="afui" class="mp">
+    <div id="header">
+    </div>
+    <div id="content">
+        <div title='待处理申请' id="taskList" class="panel" data-footer='none' data-deferDelay="html/taskList.html" data-loadDelay="getData"  data-unload="unloadedPanel">
+        </div>
+        <div title='申请' id="task" class="panel" data-footer='none' data-deferDelay="html/task.html"  data-unload="unloadedPanel">
+        </div>
+        <div title='评论' id="comment" class="panel" data-footer='none' data-deferDelay="html/comment.html"  data-unload="unloadedPanel">
+    </div>
+
+        <div id="navbar">
+        </div>
+        <footer id='footerui'>
+            <input placeholder="请输入您的意见"/>
+        </footer>
+    </div>
+</div>
+</body>
+</html>

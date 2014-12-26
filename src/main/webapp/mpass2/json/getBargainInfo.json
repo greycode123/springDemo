@@ -1,0 +1,84 @@
+{
+    "status": "success",
+    "data": {
+        "taskId": "Y0000000000000045148",
+        "redirectView": "success",
+        "pendingFile": {
+            "taskId": "Y0000000000000045148",
+            "title": "单程邮寄-eoa审批处中归档重新用印0627001",
+            "contractCount": "2",
+            "overSealPayment": "1",
+            "contractaMount": "3",
+            "contractStatus": "1"
+        },
+        "pageLoadTime": 101,
+        "contractList": [
+            {
+                "contractAmount": "0",
+                "contractTypeName": "其他合同,--请选择--,--请选择--",
+                "contractDeptName": "平安数据科技综合作业部印章作业组综合组",
+                "contractFormat": "0",
+                "contractTaskId": "Y0000000000000045148",
+                "id": "FD92FBD51C4A2C9EE04400144F269612",
+                "contractTypeList": [
+                    "313",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                "contractPartiesperson": "甲方,乙方",
+                "contractType": "313,,,",
+                "contractPartiesperson2": "乙方",
+                "contractTitle": "11111111",
+                "contractPartiesperson1": "甲方",
+                "contractFormatContent": "",
+                "contractPartiesperson6": "",
+                "contractDeptNo": "PA012_S000033519",
+                "contractPartiesperson5": "",
+                "contractPartiesperson4": "",
+                "contractTypeNameList": [
+                    "其他合同",
+                    "--请选择--",
+                    "--请选择--",
+                    "--请选择--"
+                ],
+                "contractPartiesperson3": ""
+            },
+
+            {
+                "contractAmount": "0",
+                "contractTypeName": "其他合同,--请选择--,--请选择--",
+                "contractDeptName": "平安数据科技综合作业部印章作业组综合组",
+                "contractFormat": "0",
+                "contractTaskId": "Y0000000000000045148",
+                "id": "FD92FBD51C4A2C9EE04400144F269612",
+                "contractTypeList": [
+                    "313",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                "contractPartiesperson": "甲方,乙方",
+                "contractType": "313,,,",
+                "contractPartiesperson2": "乙方",
+                "contractTitle": "11111111",
+                "contractPartiesperson1": "甲方",
+                "contractFormatContent": "",
+                "contractPartiesperson6": "",
+                "contractDeptNo": "PA012_S000033519",
+                "contractPartiesperson5": "",
+                "contractPartiesperson4": "",
+                "contractTypeNameList": [
+                    "其他合同",
+                    "--请选择--",
+                    "--请选择--",
+                    "--请选择--"
+                ],
+                "contractPartiesperson3": ""
+            }
+        ],
+        "random": "0.5865129989106208",
+        "returnView": "ajaxReturnView"
+    },
+    "msg": ""
+}

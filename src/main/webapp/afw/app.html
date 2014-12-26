@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<head>
+    <title>App Framework Kitchen Sink</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="css/appframework.css" />
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+<div id="afui">
+    <div id="splashscreen" class='ui-loader heavy'>
+        App Framework
+        <br>
+        <br>    <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>Starting app</h1>
+    </div>
+    <div id="header">
+        <a id='menubadge' class='menuButton'></a>
+    </div>
+    <div id="content">
+        <div title='Welcome' id="main" class="panel" selected="true" data-load="loadedPanel" data-unload="unloadedPanel" data-tab="navbar_home">
+            <h2 class='expanded' onclick='showHide(this,"main_info");'>Welcome</h2>
+
+            <p id='main_info'>Welcome to the kitchen sink demo for App Framework. Here you will find samples of how to use the App Framework libraries. Please select an option from below.</p>
+            <ul class="list">
+                <li class='red'>
+                    <a href="#af" id='aflink' class='icon home big'>App Framework</a>
+                </li>
+                <li class="blue">
+                    <a href="#afuidemo">App Framework UI</a>
+                </li>
+                <li>
+                    <a href="index.html" data-ignore="true">App Framework theme</a>
+                </li>
+                <li>
+                    <a href="index.html?ios" data-ignore="true">iOS theme</a>
+                </li>
+                <li>
+                    <a href="index.html?android" data-ignore="true">Android theme</a>
+                </li>
+                <li>
+                    <a href="index.html?win8" data-ignore="true">Win8 theme</a>
+                </li>
+                <li>
+                    <a href="index.html?bb" data-ignore="true">BB10 theme</a>
+                </li>
+                <li>
+                    <a href="index.html?ios7" data-ignore="true">ios7</a>
+                </li>
+                <li>
+                    <a href="index.html?tizen" data-ignore="true">tizen</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+    <div id="navbar">
+        <a href="#main/1/3" id='navbar_home' class='icon home'>home <span class='af-badge lr'>3</span></a><a href="#af" id='navbar_js' class="icon target">selectors</a><a href="#afuidemo" id='navbar_ui' class="icon picture">ui</a><a href="#afweb" id='navbar_plugins' class="icon key">plugins</a>
+    </div>
+</div>
+</body>

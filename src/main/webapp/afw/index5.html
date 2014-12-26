@@ -1,0 +1,103 @@
+﻿<html>
+<head>
+    <title>公章系统 - mpass</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="./build/css/af.ui.base.min.css" />
+    <link rel="stylesheet" type="text/css" href="./build/css/icons.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/mp.css" />
+    <script type="text/javascript" charset="utf-8" src="./build/appframework.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./build/ui/appframework.ui.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.desktopBrowsers.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./template.js"></script>
+    <style>
+
+        #afui.mp .panel{
+            padding: 5px;
+            padding-bottom: 10px;
+        }
+
+        #afui.mp .list.noArrow > li{
+             padding-right: 10px;
+         }
+        #afui.mp .list.noArrow > li > a:after{
+            display: none;
+        }
+
+        #afui.mp .list.noArrow > li > a{
+            padding-right: 10px;
+            margin-right: -10px;
+        }
+
+        #afui.mp .afScrollbar {background:#999 !important;}
+
+        .hide{
+            display: none;
+        }
+
+        #taskList{
+            padding-top:5px ;
+        }
+
+        #taskList .list.inset{
+            background-color: transparent;
+            border: none;
+        }
+
+        #taskList .list.inset li:not(.divider){
+            border: 1px #DDD solid;
+            border-radius: 6px;
+
+            margin-bottom: 5px;
+            background-color: #FFF;
+        }
+
+        #taskList .list.inset a{
+
+        }
+
+        #taskList .list .divider{
+            background-color: transparent;
+            border: 0;
+        }
+
+        #taskList .list p{
+            margin-bottom: 0;
+        }
+
+        #task .table{
+            margin-top: 0;
+        }
+
+        #mp_toast{
+            top:45%;
+            max-width: 90%;
+            text-align: center;
+            line-height: 22px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        #mp_toast.success{background-color: #27AE60;!important}
+        #mp_toast.error{background-color: #E74C3C;!important}
+        #mp_toast.info{background-color: #F1C40F;!important}
+
+
+    </style>
+
+</head>
+<body id="afui" class="mp">
+    <div id="header">
+    </div>
+    <div id="content">
+        <div title="待处理申请" id="taskList" class="panel" data-footer='none'>
+            <a href="#task">tioa</a>
+        </div>
+        <div title="待处理申请" id="task" class="panel" data-footer='none'>
+            sdadasdasdasd
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<style>
+    #infinite {
+        height: 60px;
+        line-height: 60px;
+        font-weight: bold;
+        text-align: center
+    }
+</style>
+
+<ul class="list">
+    <li><a href="#detailview">Item 1</a></li>
+    <li><a href="#detailview">Item 2</a></li>
+    <li><a href="#detailview">Item 3</a></li>
+    <li><a href="#detailview">Item 4</a></li>
+    <li><a href="#detailview">Item 5</a></li>
+    <li><a href="#detailview">Item 6</a></li>
+    <li><a href="#detailview">Item 7</a></li>
+    <li><a href="#detailview">Item 8</a></li>
+    <li><a href="#detailview">Item 9</a></li>
+    <li><a href="#detailview">Item 10</a></li>
+    <li><a href="#detailview">Item 11</a></li>
+    <li><a href="#detailview">Item 12</a></li>
+</ul>
+<div id='infinite'>Load More</div>
+<script>
+    App.page('listview', function () {
+        this.title = '上拉刷新';
+        this.init = function () {
+            var scrollerList = $("#listview").scroller();
+
+            scrollerList.addPullToRefresh();
+            $.bind(scrollerList, "refresh-release", function () {
+                var self = this;
+                setTimeout(function () { // get content from your api using ajax and display instead of setTimeout.
+                    // add new content at top of list
+                    $("#listview ul").prepend("<li><a href='#detailview'>New Item (via Pull Refresh)</a></li>");
+                    self.hideRefresh();
+                }, 2000);
+                return false; //tells it to not auto-cancel the refresh
+            });
+
+            scrollerList.addInfinite();
+            $.bind(scrollerList, "infinite-scroll", function () {
+                var self = this;
+                $("#listview").find("#infinite").text("Loading...")
+                setTimeout(function () { // get content from your api using ajax and display instead of setTimeout.
+                    $("#listview").find("#infinite").text("Load More");
+                    // add new content at bottom of list
+                    $("#listview ul").append("<li><a href='#detailview'>Next Item (via Infinite Scroll)</a></li>");
+                    self.clearInfinite();
+                }, 2000);
+            });
+
+            scrollerList.enable();
+        }
+    });
+</script>

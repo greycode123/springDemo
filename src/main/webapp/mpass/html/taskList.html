@@ -1,0 +1,114 @@
+<header>
+    <a id="backButton" class="button backMEOABtn" style="visibility: visible !important;">EOA</a>
+    <h1>待处理申请3</h1>
+    <a id="changeDeptBtn" class="button icon user big fr" href="#coordinatorChangeDept"></a>
+    <a id="taskListRefreshBtn" class="button icon refresh big fr" style="float:right;"></a>
+</header>
+<div class="noContentInfo tac hide" style="padding-top:100px;">
+    <a class="icon copy big" style="font-size:48px;"></a>
+    <br><br>暂时没有待处理的申请
+</div>
+<ul class="list">
+</ul>
+<div id="test">
+<p class="tac hide lastPageInfo pt10">没有更多数据了</p>
+<a class="button block flat nextPageBtn">下一页</a>
+</div>
+<textarea id="taskList_tpl" class="hide">
+    {if pageNo>1}
+    <li class="divider" style="padding-left:15px;">{(pageNo-1) * pageSize + 1}-{pageNo * pageSize}条</li>
+    {/if}
+    {each resultList as v}
+    <li id="{v.taskId}" {if v.emergency != 4}class="emergency"{/if}>
+    <a href="#task/taskId={v.taskId}">
+        <div class="grid">
+            <div class="col2 title">{v.title}</div>
+            <div class="col2">{v.useIdDesc}</div>
+            <div class="col2">{v.nowTaskStayTimeStr}</div>
+            <div class="col2">{v.transactor}（{v.departmentName}）</div>
+        </div>
+    </a>
+    </li>
+    {/each}
+</textarea>
+
+<script>
+    App.page('taskList', function(){
+        this.footer = 'none';
+
+        var
+                $page, $nextPageBtn, $list, $lastPageInfo, $taskListRefreshBtn, $noContentInfo,
+                pageNo = 1, pageCount, autoChangeDept = false;
+
+        var self = this;
+
+        this.init = function(){
+
+            $page = $('#taskList');
+            $nextPageBtn = $page.find(".nextPageBtn");
+            $list = $page.find('.list');
+            $lastPageInfo= $page.find('.lastPageInfo');
+            $taskListRefreshBtn = $page.find("#taskListRefreshBtn");
+            $noContentInfo = $page.find(".noContentInfo");
+            pageNo = 1;
+            pageCount = 0;
+
+            $page.find('.backMEOABtn').on('tap', function(){
+                window.location.href = CONFIG.meoaUrl;
+            });
+
+            if(USER.coordinatorDepts.length == 1){
+                $page.find('#changeDeptBtn').hide();
+            }
+
+            // 初始化事件
+            $nextPageBtn.on('tap', self.loadNextPage);
+
+            $taskListRefreshBtn.on('tap', self.refresh);
+        }
+
+        this.load = function(){
+            self.refresh();
+        }
+
+        this.loadNextPage = function(){
+            $nextPageBtn.show();
+            $nextPageBtn.text("加载中...");
+            console.log('pageNo=' + pageNo);
+
+            MpassAPI.queryTaskList(pageNo, function(result){
+                    var html = App.tmpl('taskList_tpl', result.data);
+                    $list.append(html);
+
+                pageCount = result.data.pageCount;
+
+                if (pageCount == 0){
+                    $nextPageBtn.hide();
+                    $list.text('');
+                    $noContentInfo.show();
+                    return;
+                }
+
+                if(pageNo<pageCount){
+                    $nextPageBtn.text("下一页");
+                    //$nextPageBtn[0].textContent = "下一页";
+                }else{
+                    $nextPageBtn.hide();
+                    $lastPageInfo.show();
+                }
+                pageNo++;
+            });
+        }
+
+        this.refresh = function(){
+            $list.text("");
+            $nextPageBtn.show();
+            $lastPageInfo.hide();
+            $noContentInfo.hide();
+            $.ui.scrollToTop('taskList', '0ms');
+            pageNo = 1;
+            self.loadNextPage();
+            //alert('bb:'+$("#test").html());
+        }
+    });
+</script>

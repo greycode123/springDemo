@@ -1,0 +1,319 @@
+<header>
+    <a id="backButton" class="button" style="visibility: visible !important;">返回</a>
+    <h1>申请信息6</h1>
+    <a id="taskFlowBtn" data-transition="up" class="button icon list-ul big" style="float:right;"></a>
+</header>
+<div id="taskinfo">
+</div>
+<footer>
+    <div class="clx" style="height: 49px;">
+        <div style="float:right; padding:7px 5px 0 0;">
+            <a id="showSubNavBarBtn" class="button" style="margin:0;" data-ignore-pressed="true">操作</a>
+        </div>
+        <div style="padding:6px 70px 6px 5px;">
+            <input id="procOpinion" name="option" type="text" placeholder="请输入审批意见" autocomplete="off" style="width:100%; height:36px;">
+        </div>
+    </div>
+    <div class="subNavBar tac">
+        <a id="submitStampApplyBtn" class="button">审批完成，提交用印</a>
+        <a id="backToUserBtn" class="button">返回申请人</a>
+        <a id="invalidApplicationBtn" class="button">文件归档</a>
+        <a class="button toParentBranchBtn"  href="#toParentBranch">提交上级及同级公司</a>
+        <a class="button toChildBranchBtn" href="#toChildBranch">递送下级公司</a>
+        <a class="button resetFlowBtn" href="#resetFlow">选择审批人</a>
+    </div>
+</footer>
+
+<textarea id="task_tpl" class="hide">
+    {if pendingFile}
+    <h2>{pendingFile.title}</h2>
+    <div class="table">
+        <table id="taskinfo">
+            <tr>
+                <td class="title">所属机构</td>
+                <td class="black">{pendingFile.requestDeptName}</td>
+            </tr>
+            <tr>
+                <td class="title">印章类型</td>
+                <td class="black">
+                    {if pendingFile.stampertype==0}公章{/if}
+                    {if pendingFile.stampertype==5}部门章{/if}
+                    {if pendingFile.stampertype==1}业务专用章{/if}
+                    {if pendingFile.stampertype==2}公章及部门章/业务专用章{/if}
+                </td>
+            </tr>
+            <tr>
+                <td class="title">用印方式</td>
+                <td class="black">{pendingFile.useIdDesc}</td>
+            </tr>
+            <tr>
+                <td class="title">印章名称</td>
+                <td class="black">
+                    {pendingFile.stamperName}
+                </td>
+            </tr>
+            <tr>
+                <td class="title">主送领导</td>
+                <td class="black">{pendingFile.sendleader}</td>
+            </tr>
+            <tr>
+                <td class="title">经办人</td>
+                <td class="black">{pendingFile.transactor}/{pendingFile.transactorTel}-{pendingFile.extension}</td>
+            </tr>
+            <tr>
+                <td class="title">申请部门</td>
+                <td class="black">{pendingFile.departmentName}</td>
+            </tr>
+            <tr>
+                <td class="title">申请日期</td>
+                <td class="black">{pendingFile.dateRequest.time | timeStampFormat:'yyyy-MM-dd hh:mm:ss'}</td>
+            </tr>
+            <tr>
+                <td class="title">紧急程度</td>
+                <td>
+                    {if pendingFile.emergency == 2}特急{/if}
+                    {if pendingFile.emergency == 3}急件{/if}
+                    {if pendingFile.emergency == 4}普通{/if}
+                </td>
+            </tr>
+            <tr id="taskMoreInfo" style="display: none;" afmoldstyle="table-row">
+                <td colspan="2" style="padding:0">
+                    <table>
+                        <tr>
+                            <td class="title">申请编号</td>
+                            <td class="black">{pendingFile.taskId}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">签报号</td>
+                            <td class="black">{pendingFile.eoaId}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">税务审查</td>
+                            <td class="black">
+                                {if pendingFile.isTax==1}报送税务审{/if}
+                                {if pendingFile.isTax==0}无需报送税务审查{/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">法律审批</td>
+                            <td class="black">
+                                {if pendingFile.isLawApprove==1}报送法律部门审批{/if}
+                                {if pendingFile.isLawApprove==2}无需报送法律部门审批{/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">是否合同</td>
+                            <td class="black">
+                                {if pendingFile.isContract==1}<a href="#bargain/taskId={pendingFile.taskId}">查看合同信息&gt;&gt;</a>
+                                {else}否{/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">公章单证</td>
+                            <td class="black">
+                                {if pendingFile.isvoucher==1}是{else}否{/if}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding:10px;">
+                    <p class="blue tac" style="font-size:13px;" onclick="showTaskMoreInfo(this, 'taskMoreInfo');">查看更多信息</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="box inner">
+        <div class="head">用印申请事由及内容：</div>
+        <div class="content">
+            {pendingFile.comment | convert2Html}
+        </div>
+    </div>
+    <div class="box inner">
+        <div class="head">用印附件</div>
+        <ul class="content">
+            {each attachList as v i}
+            <li>
+                <p class="option">{i+1}.{v.origFileName}</p>
+                <p class="operator">{v.uploadName}/{v.uploadTime.time | timeStampFormat:'yyyy-MM-dd hh:mm:ss'}</p>
+            </li>
+            {/each}
+            <a href="#attachSealInfo/taskId={pendingFile.taskId}" data-transition="up" class="button block" style="font-size:13px; margin:10px 5px 0;">点击查看用印附件的盖章信息</a>
+        </ul>
+    </div>
+    <div class="box inner">
+        <div class="head">领导批示</div>
+        <ul class="content">
+            {each csmsAndEoaTaskFlowList as v}
+            <li>
+                <p class="option">{v.flowResult}</p>
+                <p class="operator">{v.ownName}/{v.flowDoneDate.time | timeStampFormat:'yyyy-MM-dd hh:mm:ss'}</p>
+            </li>
+            {/each}
+        </ul>
+    </div>
+    <div class="box inner">
+        <div class="head">特殊说明</div>
+        <ul class="content">
+            {each specialNote as v}
+            <li>
+                <p class="option">{v.specialNote}</p>
+                <p class="operator">{v.specialNoteOperator}/{v.specialNoteTime}</p>
+            </li>
+            {/each}
+        </ul>
+    </div>
+    {else}
+    <p>获取申请信息出错</p>
+    {/if}
+</textarea>
+
+<script>
+    App.page('task', function(){
+                var $page, $taskinfo, $procOpinion, $taskFlowBtn,
+                        taskId = "";
+
+                this.init = function(){
+                    $page = $('#task'),
+                            $taskinfo = $page.find("#taskinfo"),
+                            $procOpinion = $page.find("#procOpinion"),
+                            $taskFlowBtn = $page.find("#taskFlowBtn");
+
+                    console.log(USER['deptNoLevel'] );
+
+                    $page.find("#showSubNavBarBtn").on('tap', function(){
+                        $(this).toggleClass("pressed");
+                        App.toggleSubFooter(160, 100);
+                    });
+
+                    if(USER['deptNoLevel'] != '10' && USER['deptNoLevel'] != '20' && USER['deptNoLevel'] != '40'){
+                        $.query("#submitStampApplyBtn").addClass('gray');
+                    }else{
+                        $page.find("#submitStampApplyBtn").on('tap', function(){
+                            App.popup({
+                                message:"你确定提交用印吗？",
+                                doneCallback:function(){
+                                    var option = $procOpinion.val();
+                                    var data = {taskId:taskId, procOpinion:option};
+                                    MpassAPI.submitApply(data, function(result){
+                                        successFunc("提交用印成功");
+                                    });
+                                }
+                            });
+                        });
+                    }
+
+                    $page.find("#backToUserBtn").on('tap', function(){
+                        if(!validateFunc())
+                        {
+                            return false;
+                        }
+
+                        App.popup({
+                            message:"你确定返回申请人吗？",
+                            doneCallback:function(){
+                                var option = $procOpinion.val();
+                                var data = {taskId:taskId, procOpinion:option};
+                                MpassAPI.returnApply2User(data, function(result){
+                                    successFunc("返回申请人成功");
+                                });
+                            }
+                        });
+                    });
+
+                    $page.find("#invalidApplicationBtn").on('tap', function(){
+                        if(!validateFunc())
+                        {
+                            return false;
+                        }
+
+                        App.popup({
+                            message:"你确定归档申请吗？",
+                            doneCallback:function(){
+                                $.ui.blockUI();
+                                var option = $procOpinion.val();
+                                var data = {taskId:taskId, procOpinion:option};
+                                MpassAPI.invalidApplication(data, function(result){
+                                    successFunc("归档申请成功");
+                                });
+                            }
+                        });
+                    });
+
+                    $page.find(".toParentBranchBtn, .toChildBranchBtn").attr("beforClickHandle",function(){
+                        if(!validateFunc())
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    });
+
+                    function validateFunc(){
+                        console.log('valid');
+                        if($procOpinion.val() == ""){
+                            App.alert("请输入审批意见");
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function successFunc(msg){
+                        App.showToast(msg, "success");
+                        console.log('operator taskId=' + taskId);
+                        $taskinfo.empty();
+                        App.goBack();
+                        App.page('taskList').refresh();
+                    }
+                }
+
+                this.load = function(){
+                    taskId = App.getParams()['taskId'];
+                    console.log("taskId=" + taskId);
+                    if (!taskId || taskId == ""){
+                        App.alert("错误：文件编号为空！");
+                        return;
+                    }
+
+                    $taskFlowBtn.attr('href', "#taskFlow/taskId=" + taskId);
+                    $(".resetFlowBtn").attr("href","#resetFlow/taskId=" + taskId);
+                    $(".toParentBranchBtn").attr("href","#toParentBranch/taskId=" + taskId);
+                    $(".toChildBranchBtn").attr("href","#toChildBranch/taskId=" + taskId);
+
+                    $taskinfo.html("");
+                    $procOpinion.val("");
+                    $.ui.showMask();
+
+                    MpassAPI.getTaskInfo(taskId, function(result){
+                                console.log('getTaskInfo taskId=' + taskId);
+                                var data = result.data;
+                                var html = App.tmpl('task_tpl', data);
+                                $taskinfo.html(html);
+                                $.ui.hideMask();
+                            },
+                            function(){
+                                $.ui.hideMask();
+                            });
+                }
+
+                this.unload = function(){
+                    App.hideSubFooter();
+                }
+            }
+    );
+
+    function showTaskMoreInfo(obj, objToShow){
+        var $el = $.query("#" + objToShow);
+
+        if ($el.css("display") !== "none") {
+            $el.hide();
+            console.log("showT:" + $(obj));
+            $(obj).html("查看更多信息");
+        } else {
+            $el.show();
+            $(obj).html("隐藏更多信息");
+        }
+    }
+</script>

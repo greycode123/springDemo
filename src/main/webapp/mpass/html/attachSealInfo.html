@@ -1,0 +1,94 @@
+<header class="header">
+    <h1>附件盖章信息</h1>
+    <a class="button icon close big backButton"></a>
+
+</header>
+<div id="attachSealInfoDiv"></div>
+<textarea id="attachSealInfo_tpl" class="hide">
+
+    <h2>{pendingFile.title}</h2>
+
+    <div class="box inner">
+        <div class="head">
+            <div>需盖章但无附件上传的用印材料描述</div>
+        </div>
+        <ul class="content">
+            <li>用印份数:{pendingFile.sealCopies}</li>
+            <li>盖章个数合计:{pendingFile.noattachSealCount}</li>
+            <li>盖章位置描述:{pendingFile.noattachSealComment}</li>
+        </ul>
+    </div>{each attachList as v i}
+    <div class="box inner">
+        <div class="head">
+            <div>{i+1}.<a class="viewAttachContentBtn" data-ignore="true" href="#viewAttachContent/fileId=908ca25984cf5384987b6478588ca12aad7&fileName={v.origFileName}" data-fileName="{v.origFileName}">{v.origFileName}</a>
+            </div>
+        </div>
+        <ul class="content">
+            <li>用印份数:{v.sealCopies}</li>
+            <li>每份盖章个数:{v.attachSealCount}</li>
+            <li>盖章个数合计:{v.sealCopies * v.attachSealCount}</li>
+            <li>盖章位置描述:{v.sealDesc}</li>{if v.voucherType}
+            <li>公章单证类型: {if v.voucherType=='00'}人事{/if} {if v.voucherType=='01'}行政{/if} {if v.voucherType=='02'}财务{/if} {if v.voucherType=='03'}银行特殊类{/if} {if v.voucherType=='04'}其它{/if}</li>{/if} {if v.printerName}
+            <li>打印机:{v.printerName}</li>{/if}</ul>
+    </div>{/each}</textarea>
+<script>
+    App.page('attachSealInfo', function() {
+        this.footer = 'none';
+
+        var $page = "",
+                $attachSealInfoDiv = "",
+                taskId = "";
+
+        var AllowExt = "doc,docx,xls,xlsx,ppt,pptx,jpg,png,tif,jpeg,pdf,txt";
+
+        this.init = function() {
+            $page = $('#attachSealInfo'),
+                    $attachSealInfoDiv = $page.find("#attachSealInfoDiv");
+
+            $page.on("click", ".viewAttachContentBtn", function(e) {
+                var fileName = $(this).data("fileName");
+                var fileSuffix = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+                console.log("fileSuffix=" + fileSuffix);
+
+                var FileExtY = AllowExt.lastIndexOf(fileSuffix);
+                if (FileExtY == -1) {
+                    App.showToast("无法查看此附件,请您使用电脑登录印章系统查看,谢谢！", "info");
+                    return;
+                }
+
+                App.gotoPage($(this).attr("href"));
+            });
+        }
+
+        this.load = function() {
+            var taskId = App.getParams()['taskId'];
+
+            console.log("taskId=" + taskId);
+
+            $attachSealInfoDiv.html("");
+            $.ui.showMask();
+
+            MpassAPI.getTaskInfo(taskId, function(result) {
+                        console.log('getTaskInfo taskId=' + taskId);
+                        var data = result.data;
+                        var html = App.tmpl('attachSealInfo_tpl', result.data);
+                        $attachSealInfoDiv.html(html);
+                        $.ui.hideMask();
+                    },
+
+                    function() {
+                        $.ui.hideMask();
+                    });
+        }
+
+        this.unload = function() {
+            //  App.hideSubFooter();
+        }
+
+        function checkFileType() {
+            alert("check2");
+            alert($this);
+            return true;
+        }
+    });
+</script>
