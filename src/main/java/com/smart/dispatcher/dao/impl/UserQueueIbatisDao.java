@@ -15,4 +15,9 @@ public class UserQueueIbatisDao extends BaseIbatisDao<UserQueue, Integer> implem
     public List<User> getDispatcherUser() {
         return null;
     }
+
+    @Override
+    public List<User> getAllUser() {
+        return super.getSqlMapClientTemplate().queryForList("GET-ALL-USER-IN-USER-QUEUE");
+    }
 }

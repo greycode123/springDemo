@@ -1,10 +1,6 @@
 package com.smart.common.dispatcher.core;
 
-import com.smart.common.dispatcher.queue.task.DefaultTaskQueue;
-import com.smart.common.dispatcher.queue.task.QueryTaskQueue;
 import com.smart.common.dispatcher.queue.task.TaskQueue;
-import com.smart.common.dispatcher.queue.user.DefaultUserQueue;
-import com.smart.common.dispatcher.queue.user.QueryUserQueue;
 import com.smart.common.dispatcher.queue.user.UserQueue;
 import com.smart.task.domain.Task;
 import com.smart.user.domain.User;
@@ -15,17 +11,11 @@ public abstract class AbstractSimpleDispatcher implements Dispatcher {
     protected UserQueue userQueue;
     protected TaskQueue taskQueue;
 
-    public AbstractSimpleDispatcher() {
-        userQueue = new DefaultUserQueue();
-        taskQueue = new DefaultTaskQueue();
-    }
-
     public boolean canDispatch() {
         return true;
     }
 
     public boolean canDispatch(Task task) {
-        if (!canDispatch()) return false;
         return true;
     }
 

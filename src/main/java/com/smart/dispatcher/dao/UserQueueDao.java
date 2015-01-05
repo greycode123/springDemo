@@ -9,4 +9,6 @@ import java.util.List;
 public interface UserQueueDao extends BaseDao<UserQueue, Integer> {
 
     List<User> getDispatcherUser();
+
+    List<User> getAllUser();
 }

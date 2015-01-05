@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap
         PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-<sqlMap namespace="config">
+<sqlMap namespace="userQueue">
     <typeAlias alias="userQueue" type="com.smart.dispatcher.domain.UserQueue"></typeAlias>
     
     <insert id="INSERT-USERQUEUE" parameterClass="userQueue">
@@ -13,15 +13,15 @@
     <insert id="UPDATE-USERQUEUE" parameterClass="userQueue">
         UPDATE `user_queue`
         SET `user_name`=#userName#,`status`=#status#,`last_dispatch_time`=#lastDispatchTime#
-        WHERE `id`=#id#
+        WHERE `id`=#ID#
     </insert>
 
-    <delete id="DELETE-USERQUEUE" parameterClass="map">
-        DELETE FROM `user_queue` `id`=#id#
+    <delete id="DELETE-USERQUEUE" parameterClass="userQueue">
+        DELETE FROM `user_queue` `id`=#ID#
     </delete>
 
     <select id="SELECT-USERQUEUE" parameterClass="map" resultClass="userQueue">
-        SELECT `id` "id", `user_name` "userName", `status` "status", `user_last_dispatch_time` "lastDispatchTime"
+        SELECT `id` "ID", `user_name` "userName", `status` "status", `user_last_dispatch_time` "lastDispatchTime"
         FROM `user_queue`
         <dynamic prepend="where">
             <isNotEmpty property="id">
@@ -38,6 +38,12 @@
                 uq.id = #id#
             </isNotEmpty>
         </dynamic>
+    </select>
+
+    <select id="GET-ALL-USER-IN-USER-QUEUE" parameterClass="map" resultClass="com.smart.user.domain.User">
+        SELECT u.user_id "ID", u.user_name "userName",u.last_ip "lastIP"
+        FROM user_queue uq
+            INNER JOIN t_user u ON uq.user_name = u.user_name
     </select>
 
 </sqlMap>

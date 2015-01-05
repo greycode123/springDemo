@@ -5,7 +5,7 @@ import com.smart.dispatcher.abnormity.AbnormityDispatch;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class QuestionDispatchTest extends AbstractBaseTest{
+public class QuestionDispatcherTest extends AbstractBaseTest{
 
     @Autowired
     private AbnormityDispatch abnormityDispatch;

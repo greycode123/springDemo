@@ -5,4 +5,6 @@
     <settings cacheModelsEnabled="true"/>
     <sqlMap resource="sqlmap-core.xml"/>
     <sqlMap resource="sqlmap-system-config.xml"/>
+    <sqlMap resource="sqlmap-userqueue.xml"/>
+    <sqlMap resource="sqlmap-taskdispatcherlog.xml"/>
 </sqlMapConfig>

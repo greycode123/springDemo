@@ -1,5 +1,6 @@
 package com.smart.common.dispatcher.queue.user;
 
+import com.smart.common.dispatcher.core.QueryUserQueue;
 import com.smart.user.domain.User;
 import org.apache.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class AbstractUserBlockingQueue implements UserQueue {
 
     private QueryUserQueue queryUserQueue;
 
-    protected Object lock = new Object();
+    protected final Object lock = new Object();
 
     public AbstractUserBlockingQueue() {
         super();
@@ -79,7 +80,7 @@ public class AbstractUserBlockingQueue implements UserQueue {
         List<User> userList = this.queryUserQueue.query();
         synchronized (lock) {
             for (User user : userList) {
-                if (user.getUserStatus() == 1) {
+                if (true) {
                     if (this.putUser(user)) {
                         //log.info(this.getDispatcherName() + ":" + user + "进入用户处理队列");
                     }

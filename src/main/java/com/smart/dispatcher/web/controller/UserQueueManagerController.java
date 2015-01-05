@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class UserQueueManagerController {
 
-    @Resource(name = "userQueueServiceImpl")
+    @Resource(name = "userQueueService")
     private UserQueueService userQueueService;
 
     @RequestMapping(value = "/userQueueManager.do", method = RequestMethod.GET)
@@ -27,7 +27,7 @@ public class UserQueueManagerController {
 
     @RequestMapping(value = "/getUserQueues.do", method = RequestMethod.POST)
     public  @ResponseBody Map<String, Object> getUserQueues(ModelMap model) {
-        List<User> userQueues = userQueueService.getAll();
+        List<User> userQueues = userQueueService.getAllUser();
         model.put("userQueues", userQueues);
 
         Map<String, Object> json = new HashMap<String, Object>();

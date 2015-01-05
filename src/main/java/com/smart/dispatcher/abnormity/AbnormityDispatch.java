@@ -1,9 +1,12 @@
 package com.smart.dispatcher.abnormity;
 
 import com.smart.common.dispatcher.core.AutoRefreshQueueDispatcherTemplate;
+import com.smart.common.dispatcher.queue.task.DefaultTaskQueue;
+import com.smart.common.dispatcher.queue.user.DefaultUserQueue;
+import com.smart.common.dispatcher.queue.user.LoopUserQueue;
 import com.smart.config.service.ConfigService;
-import com.smart.common.dispatcher.queue.task.QueryTaskQueue;
-import com.smart.common.dispatcher.queue.user.QueryUserQueue;
+import com.smart.common.dispatcher.core.QueryTaskQueue;
+import com.smart.common.dispatcher.core.QueryUserQueue;
 import com.smart.dispatcher.service.TaskDispatcherLogService;
 import com.smart.task.domain.Task;
 import com.smart.task.service.TaskService;
@@ -31,6 +34,8 @@ public class AbnormityDispatch extends AutoRefreshQueueDispatcherTemplate {
 
     public AbnormityDispatch() {
         dispatcherName = "abnormityDispatch";
+        userQueue = new DefaultUserQueue();
+        taskQueue = new DefaultTaskQueue();
     }
 
     @Override

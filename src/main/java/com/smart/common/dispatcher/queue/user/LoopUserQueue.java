@@ -15,9 +15,10 @@ public class LoopUserQueue extends AbstractUserBlockingQueue implements UserQueu
         User user = null;
 
         try {
-            synchronized (lock){
-                user = this.queue.take();
-                this.queue.put(user);
+            synchronized (lock) {
+                user = this.queue.poll();
+                if (user != null)
+                    this.queue.put(user);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

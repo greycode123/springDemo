@@ -1,4 +1,4 @@
-package com.smart.common.dispatcher.queue.user;
+package com.smart.common.dispatcher.core;
 
 import com.smart.user.domain.User;
 

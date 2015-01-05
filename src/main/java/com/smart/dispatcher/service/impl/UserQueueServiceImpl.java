@@ -9,13 +9,24 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
-@Service
-public class UserQueueServiceImpl extends AbstractBaseService<User, Integer> implements UserQueueService {
+@Service("userQueueService")
+public class UserQueueServiceImpl extends AbstractBaseService<UserQueue, Integer> implements UserQueueService {
 
     @Resource(name = "userQueueDao")
     @Required
     public void setUserQueueDao(UserQueueDao userQueueDao) {
         super.setBaseDao(userQueueDao);
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        List<User> userList = getUserQueueDao().getAllUser();
+        return userList;
+    }
+
+    public UserQueueDao getUserQueueDao() {
+        return (UserQueueDao) baseDao;
     }
 }

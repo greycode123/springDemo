@@ -16,7 +16,7 @@ public class UserQueueDaoTest extends AbstractBaseTest {
 
     @Test
     public void searchALLUserQueue(){
-        List<User> userQueueList =  userQueueDao.getDispatcherUser();
+        List<User> userQueueList =  userQueueDao.getAllUser();
         System.out.println(userQueueList.get(0));
         Assert.assertEquals(3, userQueueList.size());
     }

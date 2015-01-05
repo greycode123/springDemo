@@ -1,7 +1,7 @@
 package com.smart.dispatcher.abnormity;
 
 import com.smart.common.util.ContextHelper;
-import com.smart.common.dispatcher.queue.task.QueryTaskQueue;
+import com.smart.common.dispatcher.core.QueryTaskQueue;
 import com.smart.task.domain.Task;
 import com.smart.task.service.TaskService;
 import org.springframework.stereotype.Component;

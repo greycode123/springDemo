@@ -1,7 +1,7 @@
 package com.smart.user.domain;
 
 public class User {
-    private Integer id;
+    private Integer ID;
 
     private String userName;
 
@@ -14,13 +14,45 @@ public class User {
 
         User user = (User) o;
 
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (ID != null ? !ID.equals(user.ID) : user.ID != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return ID != null ? ID.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", ID=" + ID +
+                '}';
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLastIP() {
+        return lastIP;
+    }
+
+    public void setLastIP(String lastIP) {
+        this.lastIP = lastIP;
     }
 }

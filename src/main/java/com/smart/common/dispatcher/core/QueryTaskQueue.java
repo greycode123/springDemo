@@ -1,4 +1,4 @@
-package com.smart.common.dispatcher.queue.task;
+package com.smart.common.dispatcher.core;
 
 import com.smart.task.domain.Task;
 

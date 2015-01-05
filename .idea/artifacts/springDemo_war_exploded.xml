@@ -51,6 +51,7 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.8" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.8" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: com.h2database:h2:1.4.184" />
         </element>
       </element>
       <element id="directory" name="META-INF">

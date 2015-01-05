@@ -1,5 +1,7 @@
 package com.smart.common.dispatcher.core;
 
+import com.smart.common.dispatcher.queue.task.DefaultTaskQueue;
+import com.smart.common.dispatcher.queue.user.DefaultUserQueue;
 import com.smart.task.domain.Task;
 import com.smart.user.domain.User;
 import org.apache.commons.logging.Log;
@@ -10,6 +12,8 @@ public abstract class AutoRefreshQueueDispatcherTemplate extends AbstractSimpleD
     private Log log = LogFactory.getLog(this.getClass());
 
     protected AutoRefreshQueueDispatcherTemplate() {
+        userQueue = new DefaultUserQueue();
+        taskQueue = new DefaultTaskQueue();
     }
 
     @Override

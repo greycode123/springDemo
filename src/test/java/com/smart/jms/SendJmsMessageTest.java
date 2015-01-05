@@ -10,7 +10,7 @@ public class SendJmsMessageTest extends AbstractBaseTest {
     @Autowired
     @Qualifier("sendJmsMessageService")
     private SendJmsMessageService sendJmsMessageService;
-    
+
     @Test
     public void testSend() {
         for (int i = 0; i < 2; i++) {

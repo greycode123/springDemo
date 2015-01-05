@@ -16,6 +16,7 @@ public class SimpleDispatcherTemplate extends AbstractSimpleDispatcher {
     private AtomicInteger currentRunThreadCount = new AtomicInteger(0);
 
     public SimpleDispatcherTemplate() {
+
     }
 
     public void init() {
@@ -24,6 +25,7 @@ public class SimpleDispatcherTemplate extends AbstractSimpleDispatcher {
 
     @Override
     public void dispatch() {
+        log.debug("dispatch start execute");
         try {
             if (currentRunThreadCount.getAndIncrement() >= max_thread_num) {
                 log.debug(this.getDispatcherName() + ":current user queue=" + this.userQueue.getAllUser());
@@ -38,8 +40,9 @@ public class SimpleDispatcherTemplate extends AbstractSimpleDispatcher {
 
             log.debug(this.getDispatcherName() + ":current task queue=" + this.taskQueue.getAllTask());
 
-            Task task = null;
-            while ((task = taskQueue.getNextTask()) != null) {
+            Task task = taskQueue.getNextTask();
+            log.debug(this.getDispatcherName() + ":get task=" + task);
+            while (task != null) {
 
                 if (!canDispatch(task)) {
                     break;
@@ -47,12 +50,22 @@ public class SimpleDispatcherTemplate extends AbstractSimpleDispatcher {
 
                 log.debug(this.getDispatcherName() + ":current user queue=" + this.userQueue.getAllUser());
                 User user = userQueue.getNextUser();
+                if (user == null) {
+                    log.debug(this.getDispatcherName() + ":current user is null, put task " + task + " to taskQueue");
+                    taskQueue.putTask(task);
+                    return;
+                }
+
                 this.dispatch(task, user);
+
+                task = taskQueue.getNextTask();
+                log.debug(this.getDispatcherName() + ":get task=" + task);
             }
         } catch (RuntimeException e) {
             log.error(e.getMessage());
         } finally {
             currentRunThreadCount.getAndDecrement();
+            log.debug("dispatch final execute");
         }
     }
 

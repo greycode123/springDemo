@@ -1,5 +1,6 @@
 package com.smart.common.dispatcher.queue.user;
 
+import com.smart.common.dispatcher.core.QueryUserQueue;
 import com.smart.user.domain.User;
 
 import java.util.Collection;

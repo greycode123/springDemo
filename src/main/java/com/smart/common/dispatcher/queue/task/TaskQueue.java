@@ -1,5 +1,6 @@
 package com.smart.common.dispatcher.queue.task;
 
+import com.smart.common.dispatcher.core.QueryTaskQueue;
 import com.smart.task.domain.Task;
 
 import java.util.Collection;

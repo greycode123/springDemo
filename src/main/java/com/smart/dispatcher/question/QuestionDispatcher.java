@@ -1,9 +1,10 @@
 package com.smart.dispatcher.question;
 
 import com.smart.common.dispatcher.core.SimpleDispatcherTemplate;
-import com.smart.common.dispatcher.queue.task.QueryTaskQueue;
+import com.smart.common.dispatcher.core.QueryTaskQueue;
+import com.smart.common.dispatcher.queue.task.DefaultTaskQueue;
 import com.smart.common.dispatcher.queue.user.LoopUserQueue;
-import com.smart.common.dispatcher.queue.user.QueryUserQueue;
+import com.smart.common.dispatcher.core.QueryUserQueue;
 import com.smart.config.service.ConfigService;
 import com.smart.dispatcher.service.TaskDispatcherLogService;
 import com.smart.mail.MailService;
@@ -17,10 +18,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-@Component("questionDispatch")
-public class QuestionDispatch extends SimpleDispatcherTemplate {
+@Component("questionDispatcher")
+public class QuestionDispatcher extends SimpleDispatcherTemplate {
 
-    private Log log = LogFactory.getLog(QuestionDispatch.class);
+    private Log log = LogFactory.getLog(QuestionDispatcher.class);
 
     @Resource(name = "taskService")
     private TaskService taskService;
@@ -34,9 +35,9 @@ public class QuestionDispatch extends SimpleDispatcherTemplate {
     @Autowired
     private MailService mailService;
 
-    public QuestionDispatch() {
-        super();
-        super.userQueue = new LoopUserQueue();
+    public QuestionDispatcher() {
+        userQueue = new LoopUserQueue();
+        taskQueue = new DefaultTaskQueue();
         dispatcherName = "questionDispatch";
     }
 
@@ -51,7 +52,7 @@ public class QuestionDispatch extends SimpleDispatcherTemplate {
 
     @Override
     public boolean dispatch(Task task, User user) {
-        log.debug(dispatcherName + ":" + task + "开始派单给" + user);
+        log.info(dispatcherName + ":" + task + "开始派单给" + user);
         taskService.fixTask(task.getTaskID(), user, 3);
         taskDispatcherLogService.writeLog(task, user);
         log.info(dispatcherName + ":" + task + "派单给" + user + "完成");
