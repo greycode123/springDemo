@@ -1,4 +1,4 @@
-package com.smart.dispatcher.job;
+package com.smart.dispatcher.biz.abnormity;
 
 import com.smart.common.dispatcher.core.Dispatcher;
 import org.apache.commons.logging.Log;

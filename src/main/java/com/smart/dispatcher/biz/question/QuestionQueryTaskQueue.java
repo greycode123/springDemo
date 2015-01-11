@@ -1,4 +1,4 @@
-package com.smart.dispatcher.abnormity;
+package com.smart.dispatcher.biz.question;
 
 import com.smart.common.util.ContextHelper;
 import com.smart.common.dispatcher.core.QueryTaskQueue;
@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("abnormityQueryTaskQueue")
-public class AbnormityQueryTaskQueue implements QueryTaskQueue {
+@Component("questionQueryTaskQueue")
+public class QuestionQueryTaskQueue implements QueryTaskQueue {
 
     @Override
     public List<Task> query() {
         final TaskService taskService = (TaskService) ContextHelper.getBean("taskService");
-        return taskService.searchUnockTask();
+        return taskService.searchTaskbyTaskStatus(2);
     }
 }

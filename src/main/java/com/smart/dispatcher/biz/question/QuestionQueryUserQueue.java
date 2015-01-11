@@ -1,4 +1,4 @@
-package com.smart.dispatcher.abnormity;
+package com.smart.dispatcher.biz.question;
 
 import com.smart.common.util.ContextHelper;
 import com.smart.common.dispatcher.core.QueryUserQueue;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("abnormityQueryUserQueue")
-public class AbnormityQueryUserQueue implements QueryUserQueue {
+@Component("questionQueryUserQueue")
+public class QuestionQueryUserQueue implements QueryUserQueue {
 
     @Override
     public List<User> query() {

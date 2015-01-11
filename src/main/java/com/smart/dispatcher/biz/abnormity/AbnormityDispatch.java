@@ -1,9 +1,8 @@
-package com.smart.dispatcher.abnormity;
+package com.smart.dispatcher.biz.abnormity;
 
 import com.smart.common.dispatcher.core.AutoRefreshQueueDispatcherTemplate;
 import com.smart.common.dispatcher.queue.task.DefaultTaskQueue;
 import com.smart.common.dispatcher.queue.user.DefaultUserQueue;
-import com.smart.common.dispatcher.queue.user.LoopUserQueue;
 import com.smart.config.service.ConfigService;
 import com.smart.common.dispatcher.core.QueryTaskQueue;
 import com.smart.common.dispatcher.core.QueryUserQueue;
@@ -41,7 +40,7 @@ public class AbnormityDispatch extends AutoRefreshQueueDispatcherTemplate {
     @Override
     public boolean canDispatch() {
         if (!configService.getValueBoolean("isRunDispatchJobFlag")) {
-            log.info(dispatcherName + ":isRunDispatchJobFlag开关已关闭，不运行派单d");
+            log.info(dispatcherName + ":isRunDispatchJobFlag开关已关闭，不运行派单");
             return false;
         }
         return true;

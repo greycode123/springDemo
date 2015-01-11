@@ -1,7 +1,7 @@
 package com.smart.dispatcher;
 
 import com.smart.AbstractBaseTest;
-import com.smart.dispatcher.abnormity.AbnormityDispatch;
+import com.smart.dispatcher.biz.abnormity.AbnormityDispatch;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

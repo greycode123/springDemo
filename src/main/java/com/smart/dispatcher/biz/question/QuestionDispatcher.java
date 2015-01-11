@@ -1,4 +1,4 @@
-package com.smart.dispatcher.question;
+package com.smart.dispatcher.biz.question;
 
 import com.smart.common.dispatcher.core.SimpleDispatcherTemplate;
 import com.smart.common.dispatcher.core.QueryTaskQueue;

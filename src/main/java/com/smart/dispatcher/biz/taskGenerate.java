@@ -1,4 +1,4 @@
-package com.smart.dispatcher;
+package com.smart.dispatcher.biz;
 
 import com.smart.task.domain.Task;
 import com.smart.task.service.TaskService;
@@ -8,20 +8,21 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Component("taskGenerate")
+//@Component("taskGenerate")
 public class taskGenerate implements InitializingBean, DisposableBean{
 
     @Resource(name= "taskService")
     private TaskService taskService;
 
-    private Executor executor;
+    private ExecutorService executorService;
 
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        executor = Executors.newCachedThreadPool();
+        executorService = Executors.newCachedThreadPool();
 
         Runnable runnable = new Runnable() {
             @Override
@@ -55,11 +56,12 @@ public class taskGenerate implements InitializingBean, DisposableBean{
             }
         };
 
-        executor.execute(runnable);
-        executor.execute(runnable2);
+        executorService.execute(runnable);
+        executorService.execute(runnable2);
     }
 
     @Override
     public void destroy() throws Exception {
+        executorService.shutdown();
     }
 }

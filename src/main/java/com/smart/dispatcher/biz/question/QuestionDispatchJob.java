@@ -1,6 +1,5 @@
-package com.smart.dispatcher.job;
+package com.smart.dispatcher.biz.question;
 
-import com.smart.dispatcher.question.QuestionDispatcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
